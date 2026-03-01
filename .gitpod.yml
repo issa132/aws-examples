@@ -2,6 +2,10 @@ tasks:
   - name: aws-cli
     before:
       cd /workspace
-      curl "https://awscli.amazonaws.com/awscliv2.zip" -o "awscliv2.zip"
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       unzip awscliv2.zip
+      sudo apt update
+      sudo apt install unzip -y
       sudo ./aws/install
+      aws --version
+
