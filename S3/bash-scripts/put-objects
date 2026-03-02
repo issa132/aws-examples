@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+echo "== put-object"
+
+# Check for bucket name
+if [ -z "$1" ]; then
+    echo "There needs to be a bucket name eg. ../bucket my-bucket-name"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "There needs to be a filename prefix eg. ./bucket my-bucket-name my-filename-prefix"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+FILENAME_PREFIX=$2
+
+OBJECT_KEY=$(basename "$FILENAME")
+
+aws s3api put-object \
+--bucket $BUCKET_NAME \
+--body $FILENAME \
+--key $OBJECT_KEY
+
+#La commande touch /tmp/newfile.txt sert à créer un fichier vide appelé newfile.txt dans le dossier /tmp
+#./s3/bash-scripts/put-object my-new-shiny-bucket-ab54646 /tmp/newfile.txt commande pour uploader le fichier sur S3 
