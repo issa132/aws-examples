@@ -17,3 +17,4 @@ aws s3api delete-bucket \
 --output text
 
 #./S3/bash-scripts/delete-buckets my-new-shiny-bucket-ab54646
+# ./S3/bash-scripts/delete-bucket $BUCKET
