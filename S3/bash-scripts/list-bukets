@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo "== list newest bucket"
+
+#aws s3 ls
+#aws s3api list-buckets | jq -r '.Buckets | sort_by(.CreationDate) | reverse | .[] | .Name'
+
+aws s3api list-buckets | jq -r '.Buckets | sort_by(.CreationDate) | reverse | .[0:5] | .[] | .Name'
+echo"..."
+
+
+#ls -la S3/bash-scripts/
+#chmod u+x s3/bash-scripts/list-objects
+#chmod u+x s3/bash-scripts/*
+#aws s3api list-buckets
+#jmespath.org/tutorial.html 
