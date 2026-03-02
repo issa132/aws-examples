@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Check for bucket name
+# ./S3/bash-scripts/create-bukets my_new_buket
 if [ -z "$1" ]; then
     echo "There needs to be a bucket name eg. ./bucket my-bucket-name"
     exit 1
