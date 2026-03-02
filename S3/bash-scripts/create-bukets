@@ -9,5 +9,11 @@ fi
 
 BUKET_NAME = $1
 
-echo "aws s3api create-bucket --bucket BUKET_NAME"
+#echo "aws s3api create-bucket --bucket BUKET_NAME"
 #aws s3api create-bucket --bucket-name --region us-east-1
+# https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html
+aws s3api create-bucket \
+--bucket $BUCKET_NAME \
+--create-bucket-configuration="LocationConstraint=ca-central-1" \
+--query Location \
+--output text
