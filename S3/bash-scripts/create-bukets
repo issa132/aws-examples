@@ -7,4 +7,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-aws s3api create-bucket --bucket $1
+BUKET_NAME = $1
+
+echo "aws s3api create-bucket --bucket BUKET_NAME"
+#aws s3api create-bucket --bucket-name --region us-east-1
