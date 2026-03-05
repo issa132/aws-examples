@@ -1,4 +1,9 @@
 tasks:
+
+  - name: utils
+    before: |
+      sudp apt-get install tree
+      #https://builder.aws.com/build/tools
   - name: aws-cli
     env:
       AWS_CLI_AUTO_PROMPT: on-partial
