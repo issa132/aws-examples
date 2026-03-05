@@ -13,7 +13,13 @@ tasks:
   - name: powershell
     before: |  
       ##################################
+      # https://docs.aws.amazon.com/powershell/
+      # https://docs.aws.amazon.com/powershell/v5/reference/items/pstoolsref-welcome.html
+      # https://techcommunity.microsoft.com/blog/itopstalkblog/autocomplete-in-powershell/2604524
       # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4
+      # https://docs.aws.amazon.com/powershell/v5/userguide/pstools-getting-set-up-windows.html 
+      # https://docs.aws.amazon.com/powershell/v5/userguide/ps-installing-awstools.html
+
       # Prerequisites
 
       # Update the list of packages
@@ -46,7 +52,11 @@ tasks:
       ##################################
       # Install PowerShell
       sudo apt-get install -y powershell
+      
 
       # Start PowerShell
       #pwsh
-
+      #Install-Module -Name AWS.Tools.Installer
+      #Install-AWSToolsModule AWS.Tools.EC2,AWS.Tools.S3 -CleanUp
+      #Install-AWSToolsModule AWS.Tools.S3 -CleanUp
+      #Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
