@@ -2,8 +2,23 @@ tasks:
 
   - name: utils
     before: |
-      sudp apt-get install tree
+      sudo apt-get install tree
       #https://builder.aws.com/build/tools
+
+  - name: ruby
+    before: |
+      sudo apt update
+      sudo apt install ruby-full
+
+
+  - name: java
+    before: |
+      sudo apt update
+      sudo apt install default-jre
+      sudo apt install default-jdk
+      #sudo apt install openjdk-21-jdk
+
+
   - name: aws-cli
     env:
       AWS_CLI_AUTO_PROMPT: on-partial
