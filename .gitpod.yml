@@ -11,6 +11,13 @@ tasks:
       sudo apt install ruby-full
       sudo gem install bundler
 
+  - name:  marven
+    before: |
+      #https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
+      sudo apt-get update
+      sudo apt-get install -y maven
+
+
 
   - name: java
     before: |
