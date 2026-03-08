@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# AWS CloudFormation est un service d'infrastructure en tant que code (IaC) 
+# d'Amazon Web Services (AWS) permettant de modéliser, provisionner et gérer 
+# de manière automatisée et déclarative des ressources cloud (serveurs EC2, bases de données, etc.) 
+# via des fichiers modèles YAML ou JSON. Il simplifie la gestion en automatisant le déploiement et la 
+# dépendance des ressources sous forme de "piles" (stacks)
+
+
+echo "== delete stack for s3 bucket via CFN"
+
+STACK_NAME="cfn-s3-simple"
+
+aws cloudformation delete-stack \
+--stack-name $STACK_NAME \
+--region us-west-2
