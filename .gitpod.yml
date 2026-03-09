@@ -2,43 +2,43 @@ tasks:
 
   - name: terraform
     before: |
-      sudo apt-get install tree
+      #sudo apt-get install tree
       #https://builder.aws.com/build/tools
 
   - name: utils
     before: |
       #https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
-      sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-      wget -O- https://apt.releases.hashicorp.com/gpg | \
-      gpg --dearmor | \
-      sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-      gpg --no-default-keyring \
-      --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
-      --fingerprint
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-      sudo apt update
-      sudo apt-get install terraform
+      #sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+      #wget -O- https://apt.releases.hashicorp.com/gpg | \
+      #gpg --dearmor | \
+      #sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+      #gpg --no-default-keyring \
+      #--keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+      #--fingerprint
+      #echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+      #sudo apt update
+      #sudo apt-get install terraform
 
 
   - name: ruby
     before: |
-      sudo apt update
-      sudo apt install ruby-full
-      sudo gem install bundler
+      #sudo apt update
+      #sudo apt install ruby-full
+      #sudo gem install bundler
 
   - name:  marven
     before: |
       #https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
-      sudo apt-get update
-      sudo apt-get install -y maven
+      #sudo apt-get update
+      #sudo apt-get install -y maven
 
 
 
   - name: java
     before: |
-      sudo apt update
-      sudo apt install default-jre
-      sudo apt install default-jdk
+      #sudo apt update
+      #sudo apt install default-jre
+      #sudo apt install default-jdk
       #sudo apt install openjdk-21-jdk
 
 
@@ -66,35 +66,35 @@ tasks:
       # Prerequisites
 
       # Update the list of packages
-      sudo apt-get update
+      #sudo apt-get update
 
       # Install pre-requisite packages
-      sudo apt-get install -y wget apt-transport-https software-properties-common
+      #sudo apt-get install -y wget apt-transport-https software-properties-common
 
       # Get the version of Ubuntu
-      source /etc/os-release
+      #source /etc/os-release
 
       # Download the Microsoft repository keys
       #wget -q https://packages.microsoft.com/config/ubuntu/$VERSION_ID/packages-microsoft-prod.deb
-      source /etc/os-release
-      echo $VERSION_ID
+      #source /etc/os-release
+      #echo $VERSION_ID
 
-      wget -q https://packages.microsoft.com/config/ubuntu/$VERSION_ID/packages-microsoft-prod.deb
+      #wget -q https://packages.microsoft.com/config/ubuntu/$VERSION_ID/packages-microsoft-prod.deb
 
       
 
       # Register the Microsoft repository keys
-      sudo dpkg -i packages-microsoft-prod.deb
+      #sudo dpkg -i packages-microsoft-prod.deb
 
       # Delete the Microsoft repository keys file
-      rm packages-microsoft-prod.deb
+      #rm packages-microsoft-prod.deb
 
       # Update the list of packages after we added packages.microsoft.com
-      sudo apt-get update
+      #sudo apt-get update
 
       ##################################
       # Install PowerShell
-      sudo apt-get install -y powershell
+      #sudo apt-get install -y powershell
       
 
       # Start PowerShell
