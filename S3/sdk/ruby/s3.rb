@@ -4,6 +4,7 @@ require 'pry'           # Interactive shell for debugging
 require 'securerandom'  # For generating secure random strings (UUIDs)
 
 # to execute the program you do bundle exec ruby s3.rb
+# rubyguides.com
 
 # S3 Bucket configuration
 bucket_name = ENV['BUCKET_NAME']  # Fetching bucket name from environment variables
