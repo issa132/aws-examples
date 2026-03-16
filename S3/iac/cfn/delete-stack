@@ -4,6 +4,16 @@
 # de manière automatisée et déclarative des ressources cloud (serveurs EC2, bases de données, etc.) 
 # via des fichiers modèles YAML ou JSON. Il simplifie la gestion en automatisant le déploiement et la 
 # dépendance des ressources sous forme de "piles" (stacks)
+#Une stack CloudFormation c'est un ensemble de ressources AWS créées et gérées ensemble comme une unité.
+#Imagine que tu veux déployer une application, tu as besoin de :
+#Un serveur EC2
+#Une base de données RDS
+#Un bucket S3
+#Un load balancer
+
+#Au lieu de créer tout ça un par un manuellement, tu mets tout dans un fichier 
+#template (YAML/JSON) → CloudFormation crée tout ça d'un coup. Cet ensemble = une Stack.
+
 
 
 echo "== delete stack for s3 bucket via CFN"
