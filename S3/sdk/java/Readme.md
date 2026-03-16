@@ -14,4 +14,5 @@
 # -DinteractiveMode=false
 # ```
 
+# you have to install maven before running this command.
 mvn -B archetype:generate -DarchetypeGroupId=software.amazon.awssdk -DarchetypeArtifactId=archetype-lambda -Dservice=s3 -Dregion=US_EAST_1 -DarchetypeVersion=2.42.8 -DgroupId=com.example.myapp -DartifactId=myapp
