@@ -53,6 +53,10 @@ tasks:
       sudo ./aws/install
       aws --version
 
+      vscode:
+      extensions:
+        - amazonwebservices.aws-toolkit-vscode
+
   - name: powershell
     before: |  
       ##################################
@@ -103,3 +107,4 @@ tasks:
       #Install-AWSToolsModule AWS.Tools.EC2,AWS.Tools.S3 -CleanUp
       #Install-AWSToolsModule AWS.Tools.S3 -CleanUp
       #Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+
