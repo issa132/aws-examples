@@ -9,7 +9,8 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 /**
  * Lambda function entry point. You can change to use other pojo type or implement
  * a different RequestHandler.
- *
+ *  see developper guide here: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/home.html
+ * https://central.sonatype.com/artifact/software.amazon.awssdk/archetype-lambda
  * @see <a href=https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html>Lambda Java Handler</a> for more information
  */
 public class App implements RequestHandler<Map<String, String>, String> {

@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 
 /**
  * The module containing all dependencies required by the {@link App}.
+ * help set our sdk client
  */
 public class DependencyFactory {
 
