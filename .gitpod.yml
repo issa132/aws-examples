@@ -2,7 +2,15 @@ tasks:
 
   - name: cdk
     before: |
+      # github.com/aws/aws-cdk#getting-started
+      # github.com/aws/aws-cdk
+      #curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      #source ~/.bashrc
+      #nvm install --lts
+      #node --version
+      #npm --version 
       npm i -g aws-cdk
+      cdk --version
 
   - name: terraform
     before: |
