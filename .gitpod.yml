@@ -19,6 +19,9 @@ tasks:
       #sudo apt update
       #sudo apt install terraform
 
+      #terraform init
+      #terraform plan
+
 
       #https://builder.aws.com/build/tools
 
