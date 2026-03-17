@@ -21,6 +21,8 @@ tasks:
 
       #terraform init
       #terraform plan
+      #terraform apply
+      #terraform destroy
 
 
       #https://builder.aws.com/build/tools
