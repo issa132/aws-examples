@@ -11,6 +11,8 @@ tasks:
       #npm --version 
       npm i -g aws-cdk
       cdk --version
+      # pour creer un projet cdk avec les dossiers neccessaires
+      # cdk init app --language=typescript
 
   - name: terraform
     before: |
