@@ -2,6 +2,12 @@
 #Déployer
 #terraform init
 #terraform apply
+#terraform plan
+#terraform apply --auto-approve
+# aws s3 ls s3://terraform-20231214191427287500000001
+# aws s3 cp s3://terraform-20231214191427287500000001/myfile.txt myfile.txt | cat
+
+
 
 terraform {
   required_providers {
@@ -16,7 +22,7 @@ provider "aws" {
   region = "ca-central-1"
 }
 
-resource "aws_s3_bucket1" "default" {
+resource "aws_s3_bucket" "default" {
   bucket = "mon-bucket-unique-123"
 }
 
