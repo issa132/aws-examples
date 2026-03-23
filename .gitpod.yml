@@ -16,6 +16,7 @@ tasks:
      
   - name: terraform
     before: |
+      source source /workspaces/aws-examples/bin/terraform_cli_install.sh
       #sudo apt-get install tree
 
       #sudo apt update
