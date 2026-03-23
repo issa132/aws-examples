@@ -6,7 +6,7 @@
 #terraform apply --auto-approve
 # aws s3 ls s3://terraform-20231214191427287500000001
 # aws s3 cp s3://terraform-20231214191427287500000001/myfile.txt myfile.txt | cat
-
+#terraform destroy
 
 
 terraform {
@@ -30,5 +30,6 @@ resource "aws_s3_object" "object" {
   bucket = aws_s3_bucket.default.id
   key    = "myfile.txt"
   source = "myfile.txt"
+  #etags if the content has change and checksum for data integrity
   etag   = filemd5("myfile.txt")
 }
