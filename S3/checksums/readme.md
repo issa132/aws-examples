@@ -55,3 +55,19 @@ rhash --crc32 myfile.txt
 #  --checksum-algorithm="CRC32" \
 #  --checksum-crc32
 
+
+# 
+```sh
+bundle exec ruby crc.rb
+```
+
+
+```sh
+aws s3api put-object \
+--bucket="checksums-examples-ab-2342" \
+--key="myfilesha1.txt" \
+--body="myfile.txt" \
+--checksum-algorithm="SHA1" \
+--checksum-sha1="c28ccc2c5e214036806014df9fb43634f3e770b2"
+```
+# aws.amazon.com/blogs/aws/new-additional-checksum-algorithms-for-amazon-s3/
