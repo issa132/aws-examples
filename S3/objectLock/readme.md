@@ -24,7 +24,7 @@ aws s3api put-object \
 ## Uses ML to analyze object usage and determine storage class. Extra fee to analyze
 
 ## S3 Express One-Zone
-## single-digit ms performance, special bucket type, one AZ, 50% less than Standard
+## single-digit ms performance, special bucket type, one AZ, x10 faster 50% less cost than Standard, single AZ
 
 ## S3 Standard-IA (Infrequent Access)
 ## Fast, Cheaper if you access less than once a month.
@@ -32,7 +32,7 @@ aws s3api put-object \
 
 ## S3 One-Zone-IA
 ## Fast Objects only exist in one AZ. Cheaper than Standard IA by 20% less
-## (Reduce durability) Data could get destroyed. Extra fee to retrieve.
+## (Reduce durability) Data could get destroyed. Extra fee to retrieve. durability 11 9, availabity 99.5 ideal for secondary backup, there is a retrival fee, mu=inimum storage duration charge of 30 days 
 
 ## S3 Glacier Instant Retrieval
 ## For long-term cold storage. Get data instantly
