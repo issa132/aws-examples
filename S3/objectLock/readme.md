@@ -34,11 +34,36 @@ aws s3api put-object \
 ## Fast Objects only exist in one AZ. Cheaper than Standard IA by 20% less
 ## (Reduce durability) Data could get destroyed. Extra fee to retrieve. durability 11 9, availabity 99.5 ideal for secondary backup, there is a retrival fee, mu=inimum storage duration charge of 30 days 
 
+# the next 3 storages are similar to s3 glacier but with better convenience and flexibility
+
 ## S3 Glacier Instant Retrieval
-## For long-term cold storage. Get data instantly
+## For long-term cold storage. Get data instantly 
+
+
 
 ## S3 Glacier Flexible Retrieval
-## takes minutes to hours get data (Standard, Expedited, Bulk Retrieval)
+## takes minutes to hours get data (Standard, Expedited, Bulk Retrieval). part of S3 glacier vault, rarely access but still need immediate access. durability 11 9, availabity 3 9 redundancy 3 , Cost: 68% lower than standard IA, long lived data access once per quarter (once per month). ex image hosting, medical imaging, satellite image... has retrival fees, min storage duration of 90days
 
-## S3 Glacier Deep Archive
-## The lowest cost storage class. Data retrieval time is 12 hours.
+## Les 3 niveaux de récupération
+# ⚡ 1. Expedited Tier (rapide)
+# ⏱️ 1 à 5 minutes
+# 💰 Le plus cher
+# 📦 Limite : 250 MB max
+# 👉 Pour les urgences (ex : besoin immédiat d’un fichier)
+# ⏳ 2. Standard Tier (normal)
+# ⏱️ 3 à 5 heures
+# 💰 Prix moyen
+# 📦 Pas de limite de taille
+# 👉 Option par défaut (le plus utilisé)
+# 🐢 3. Bulk Tier (lent)
+# ⏱️ 5 à 12 heures
+# 💰 Le moins cher
+# 📦 Pas de limite (même très gros volumes)
+# 👉 Pour récupérer beaucoup de données sans urgence
+
+## S3 Glacier Deep Archive (FORMALLY S3 GLACIER)
+## The lowest cost storage class. Data retrieval time is 12 hours. part of S3 glacier vault(use vault over bucket). combine s3 and glacier in single set of API
+
+# Standard Tier → 12 hours
+# Bulk Tier → 48 hours
+
