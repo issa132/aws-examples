@@ -17,3 +17,10 @@ aws s3 cp bootcamp.txt s3://bucket-policy-example-ab-5235
 
 # Test READ permission - list the bucket from the other account
 aws s3 ls s3://bucket-policy-example-ab-5235
+
+## cleanup
+# Delete the test object
+aws s3 rm s3://bucket-policy-example-ab-5235/bootcamp.txt
+
+# Delete the bucket
+aws s3 rb s3://bucket-policy-example-ab-5235
