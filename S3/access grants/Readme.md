@@ -17,3 +17,7 @@ It can connect to select Third-Party services via the AWS Marketplace.
 
 - Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that allows a server to indicate any other origins (domain, scheme, or port) than its own from which a browser should permit loading of resources
 
+Amazon S3 allows you to set CORS configuration to a S3 bucket with static website hosting so different origins can perform HTTP requests from your S3 Static website.
+
+Cette explication décrit comment configurer CORS sur un bucket S3 hébergeant un site web statique, permettant ainsi à différentes origines d'effectuer des requêtes HTTP vers ce site S3.
+
