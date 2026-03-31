@@ -100,7 +100,7 @@ curl -X POST -H "Content-Type: application/json" https://1kccnjkm43.execute-api.
 ## awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/put-bucket-cors.html#examples
 
 ## Set CORS on our bucket
-```sh
+```sh```
 aws s3api put-bucket-cors --bucket cors-fun-ab-36252 --cors-configuration file://cors.json
 ```
 ## developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
