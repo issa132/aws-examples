@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+  <style></style>
+  * {
+    font-family: 'Rubik Bubbles';
+  }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Welcome to My Website</h1>
+    <p>What do you think of my amazing Website!</ p>
+  </main>
+  <script type="text/javascript" src="http://cors-fun2-ab-36252.s3-website.ca-central-1.amazonaws.com/hello.js"></script>
+  <script type="text/javascript">
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://1kccnjkm43.execute-api.ca-central-1.amazonaws.com/prod/hello", true);
+  // Send the proper header information along with the request
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = () => {
+    // Call a function when the state changes.
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      const results = JSON.parse(xhr.responseText);
+      console.log('results', results)
+    }
+  };
+  // xhr.send("foo=bar&lorem=ipsum");
+  //w3schools.com/js/js_json_http.asp
+
+  xhr.send();
+  // xhr.send(new Int8Array());
+  // xhr.send(document);
+</script>
+
+</body>
+</html>
