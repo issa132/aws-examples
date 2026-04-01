@@ -65,3 +65,5 @@ aws s3 cp hello.txt s3://encryption-fun-ab-135/hello.txt \
 
 # to download the file
 aws s3 cp s3://encryption-fun-ab-135/hello.txt hello.txt --sse-c AES256 --sse-c-key fileb://ssec.key
+
+# S3 Bucket key lets you generate a short-lived bucket-level key from AWS Key that is temporarily stored in S3
