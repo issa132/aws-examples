@@ -1,5 +1,5 @@
-// docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_examples.html
 {
+  "_comment": "docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_examples.html",
   "Version": "2012-10-17",
   "Statement": [{
     "Effect": "Allow",
