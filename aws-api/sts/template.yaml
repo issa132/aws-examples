@@ -1,0 +1,56 @@
+# docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html
+# docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-formats.html
+# docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html#aws-resource-iam-role-examples
+# docs.aws.amazon.com/AmazonS3/latest/userguide/s3-arn-format.html
+# docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html#aws-resource-s3-bucket--examples
+# sudo apt install python3-pip -y && pip3 install cfn-lint
+# Ctrl+Shift+X → rechercher cfn-lint → Install
+# code --install-extension kddejong.vscode-cfn-lint
+# Fais Ctrl+Shift+P → tape Open User Settings JSON → ajoute ceci :
+#     "!Ref scalar", "!Sub scalar", ... 
+# aller sur cloudformation --> stack --> events pour voir si ca reussit
+# apres deploy on fait le sh sur ```sh aws sts assume-role \...
+ 
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create a role for us to assume and create a resource we'll have access to
+Parameters:
+  BucketName:
+    Type: String
+    Default: "sts-fun-ab-63463"
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
+  StsRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"		 	 	 
+        Statement:
+          - Effect: Allow
+            Principal:
+                AWS: 
+                - "arn:aws:iam::982383527471:user/sts-machine-user"
+                - !Sub "arn:aws:iam::${AWS::AccountId}:user/issa.abdoulaye"  # ✅ utilisateur IAM
+            #Service:
+                #- s3.amazonaws.com
+                # "arn:aws:iam::315301634086:user/issa.abdoulaye"  
+                
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: s3 access
+          PolicyDocument:
+            Version: "2012-10-17"		 	 	 
+            Statement:
+              - Effect: Allow
+                Action: '*'
+                Resource: [
+                  !Sub "arn:aws:s3:::*", # for list bucket actions
+                  !Sub "arn:aws:s3:::${BucketName}",
+                  !Sub "arn:aws:s3:::${BucketName}/*"
+                ]

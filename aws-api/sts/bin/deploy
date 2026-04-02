@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# docs.aws.amazon.com/cli/latest/reference/cloudformation/
+# docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy/
+
+aws cloudformation deploy \
+--template-file ../template.yaml \
+--stack-name my-sts-fun-stack \
+--capabilities CAPABILITY_IAM
+
+# to make the file executable, we add an x to make it executable  chmod u+x bin/deploy
+# then we do ./bin/deploy to deploy 
+
