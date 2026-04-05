@@ -55,7 +55,7 @@ $ASSOC_ID=$(aws ec2 describe-route-tables \
 --query "RouteTables[].Associations[?SubnetId=='$SUBNET_ID'].RouteTableAssociationId[]" \
 --output text)
 
-echo "ASSOC_ID: ASSOC_ID"
+echo "ASSOC_ID: $ASSOC_ID"
 
 aws ec2 disassociate-route-table --association-id $ASSOC_ID
 
