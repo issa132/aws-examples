@@ -1,0 +1,8 @@
+[33mcommit 7440f42f9221b6d0dfd555dc121845dde6f93975[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: issa132 <issa132@hotmail.com>
+Date:   Sun Apr 5 09:21:30 2026 +0000
+
+    aws api
+
+ aws-api/sts/Readme.md | 11 [32m+[m[31m----------[m
+ 1 file changed, 1 insertion(+), 10 deletions(-)

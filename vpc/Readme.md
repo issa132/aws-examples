@@ -47,3 +47,61 @@ DNS hostnames (should your instance have domain name addresses)
 
 CIDR.xyz
 
+AWS has a default VPC in every region
+A default VPC is configure by default with:
+
+* An IPV4 CIDR block at the address 172.31.0.0/16. 65,536 IPv4 addresses
+* A subnet (size of /20) for each possible Availability Zone (AZ) 4,096 IPv4 addresses
+* An Internet Gateway (IGW)
+* A default Security Group (SG)
+* Create a default Network access control list (NACL)
+* Default DHCP options set
+* A Route Table with a route out to the internet via IGW
+
+
+If you delete the Default VPC (by accident or intentionally) and you want to recreate a default VPC. You can run the follow AWS CLI command:
+aws ec2 create-default-vpc --region ca-central-1
+
+
+To Delete a VPC you need to delete multiple VPC resource before you can delete:
+
+Security groups (SGs) and Network ACLs (NACLs)
+Subnets
+Route tables (RTs)
+Gateway endpoints
+Internet gateways (IGWs)
+Egress-only internet gateways (EO-IGWs)
+
+aws ec2 delete-security-group --group-id sg-id
+aws ec2 delete-network-acl --network-acl-id acl-id
+aws ec2 delete-subnet --subnet-id subnet-id
+aws ec2 delete-route-table --route-table-id rtb-id
+aws ec2 detach-internet-gateway --internet-gateway-id igw-id --vpc-id vpc-id
+aws ec2 delete-internet-gateway --internet-gateway-id igw-id
+aws ec2 delete-egress-only-internet-gateway --egress-only-internet-gateway-id eigw-id
+
+aws ec2 delete-vpc --vpc-id vpc-id
+
+The default route or catch-all-route represents all possible IP addresses
+Think of this route as giving access from anywhere or to the internet without restriction
+
+When we specify 0.0.0.0/0 in our Route Table for IGW, we are allowing internet access
+When we specify 0.0.0.0/0 in our Security Group's Inbound Rules, we are allowing all traffic from the internet to access our public resources
+
+AWS Resource Access Manager (RAM) allows you to share resources across your AWS Accounts.
+You share VPCs by sharing subnets
+
+# Network Access Controls (NACLs) acts as a ''stateless'' virtual firewall at the subnet level
+
+NACLS have both ALLOW and DENY rules.
+A default NACL is created with every VPC
+
+Subnets are associated with NACLs.
+A subnet can only belong to a single NACL.
+
+The key difference of NACL's vs Security Groups is that NACLs have both allow and deny rule.
+With NACL's you could block a single IP address. You can't do this with SGs
+
+
+
+
