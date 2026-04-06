@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 # docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-instance.html
 # docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-securitygroup.html
+# docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-instanceprofile.html#cfn-iam-instanceprofile-roles
 Description: Launch a simple EC2 for use with testing VPCs
 Parameters:
   InstanceType:
