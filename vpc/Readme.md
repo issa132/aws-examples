@@ -14,7 +14,43 @@ Acts as a stateless virtual firewall for compute within a VPC
 Operates at the subnet level with allow and deny rules
 # Security Groups (SG)
 Acts as a stateful virtual firewall for compute within a VPC
-Operates at the instance level with allow rules
+Operates at the instance level with allow rules. Security Groups are associated with EC2 instances
+Each SG contains two different sets of rules:
+    Inbound rules (ingress traffic, entering)
+    Outbound rules (egress traffic, leaving)
+A Security Group (Sg) can contain multiple instances in different subnets.
+SGs are not bound by subnets, but are bound by VPC
+there is only allow rules. all traficks are blocks by default. 
+
+# Allow IP Addresses
+You can specify the source to be an IPv4 or Ipv6 range or a specific IP
+A specific IP
+
+# Allow to Another Security Groups
+You can specify the source to be another security group
+
+# Nested Security Groups
+An instance can belong to multiple Security Groups, and rules are permissive (instead of restrictive). If you have one security group with no Allow and add an Allow to another, it will be Allow.
+
+# Create the security groups
+# Add rules to the security group
+# Associate EC2 instance to the security group.
+
+ 
+You can have up to 10,000 Security Groups in a Region (default is 2,500)
+You can have 60 inbound rules and 60 outbound rules per security group
+16 Security Groups per Elastic Network Interface (ENI) (default is 5)
+
+# Security groups do not filter traffic destined to and from the following:
+
+Amazon Domain Name Services (DNS)
+Amazon Dynamic Host Configuration Protocol (DHCP)
+Amazon EC2 instance metadata
+Amazon ECS task metadata endpoints
+License activation for Windows instances
+Amazon Time Sync Service
+Reserved IP addresses used by the default VPC route
+
 # Public Subnets
 Subnets allow instances to have public IP addresses
 # Private Subnets
