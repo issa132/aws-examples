@@ -208,3 +208,55 @@ A service endpoint is the way to access IPv6:
 
     Private Endpoint Support
 
+IPv4 only VPCs can be migrated to operate in Dual Stack mode (Ipv4 and IPv6)
+Steps to Migrate a IPv4 Only VPC to dualstack
+
+* Add new IPv6 CIDR block to VPC
+* Create or Associate IPv6 Subnets
+    IPv4 Subnets can't be migrated
+* Update Route Table for IPv6 to IGW
+* Upgrade SG rules to include IPv6 address ranges
+* Migrate EC2 instance type if it does not support IPV6
+
+You cannot disable IPv4 support for your VPC and subnets; this is the default IP addressing system for Amazon VPC and Amazon EC2.
+
+# AWS Direct Connect is the AWS solution for establishing dedicated network connections from on-premises locations to AWS. Helps reduce network costs and increase bandwidth throughput. (great for high-traffic networks)
+Provides a more consistent network experience than a typical internet-based connection. (reliable and secure)
+
+Connection Requirements:
+
+ Your network is co-located with an existing AWS Direct Connect location
+ You are working with an AWS Direct Connect partner who is a member of the AWS Partner Network (APN).
+ You are working with an independent service provider to connect to AWS Direct Connect
+
+A co-location (aka carrier-hotel) is a data center where equipment, space, and bandwidth are available for rental to retail customers
+
+# VPC Endpoints allow you to privately connect your VPC to other AWS and other services
+
+Think of a secret tunnel where you don't have to leave the AWS network
+VPC Endpoints provide the following benefits
+
+Eliminates the need for:
+    Internet Gateway (IGW)
+    NAT device
+    VPN connection
+    AWS Direct Connect
+
+Instances in the VPC do not require a public IPv4 address
+Traffic between your VPC and other services does not leave the AWS network.
+Horizontally scaled, redundant, and highly available VPC component.
+Allows secure communication between instances and services without adding availability risks or bandwidth constraints on your traffic.
+
+There are 3 Types of VPC Endpoints
+
+Interface Endpoints
+Gateway Endpoints
+Gateway Load Balancer Endpoints
+
+# AWS PrivateLink is a broader service that allows you to securely connect your VPC to:
+
+    Supported AWS Services
+    AWS services hosted in other AWS Accounts
+    supported AWS Marketplace partner services
+without the need of an IGW, NAT, VPN, or AWS Direct Connect connection
+
