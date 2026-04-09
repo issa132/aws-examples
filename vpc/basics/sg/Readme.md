@@ -260,3 +260,156 @@ Gateway Load Balancer Endpoints
     supported AWS Marketplace partner services
 without the need of an IGW, NAT, VPN, or AWS Direct Connect connection
 
+# Interface Endpoints are Elastic Network Interfaces (ENI) with a private IP address. They serve as an entry point for traffic going to a supported service.
+Access services hosted on AWS easily and securely by keeping your network traffic within the AWS network.
+The Elastic Network Interface (ENI) is an entry point for traffic destined to the service.
+
+# Gateway Load Balancer (GWLB) Endpoints powered via PrivateLink allows you to distribute traffic to a fleet of network virtual appliances.
+Deploy, scale and manage: Firewalls, Intrusion Detection and Prevention Systems (IDS/IPS), and Deep Packet Inspection Systems.
+
+You can send traffic to GWLB by making simple configuration updates in your VPCs' route tables.
+
+# A Gateway Endpoint provides reliable connectivity to Amazon S3 and DynamoDB without requiring an internet gateway or a NAT device for your VPC.
+Gateway endpoints do not use AWS PrivateLink. Gateway endpoints have no additional charge. Gateway endpoints support the following services: Amazon DynamoDB and Amazon S3.
+
+To create a Gateway Endpoint, you must specify the VPC in which you want to create the endpoint and the service to which you want to establish the connection.
+
+
+# VPC Flow Logs allow you to capture IP traffic information through your VPC.
+aws ec2 create-flow-logs \
+    --resource-type VPC \
+    --resource-ids vpc-xxxxxxxx \
+    --traffic-type ALL \
+    --log-destination-type cloud-watch-logs \
+    --log-destination arn:aws:logs:region:account-id:log-group:log-group-name \
+    --deliver-logs-permission-arn arn:aws:iam::account-id:role/role-name
+Flow Logs can be scoped for the following: VPC and Subnets, Elastic Network Interface (ENIs), Transit Gateway, and Transit Gateway Attachment.
+You can monitor traffic for: ACCEPT (traffic was accepted), REJECT (traffic that was rejected), and ALL (all accepted and rejected traffic).
+Logs can be delivered to either: Amazon S3 bucket, CloudWatch Logs, or Kinesis Data Firehose.
+
+
+# AWS VPN lets you establish a secure and private tunnel from your network or device to the AWS global network.
+AWS Site-to-Site VPN securely connects an on-premises network or branch office site to a VPC.
+AWS Client VPN securely connects users to AWS or on-premises networks.
+
+# Internet Protocol Security (IPsec) is a secure network protocol suite that authenticates and encrypts the packets of data to provide secure encrypted communication between two computers over an Internet Protocol network. It is used in virtual private networks (VPNs).
+
+# AWS Site-to-Site has the following components:
+VPN Connection — secure connection between VPC and on-premises equipment. VPN tunnel — encrypted connection for your data. Customer gateway (CGW) — provides information to AWS about your customer gateway device. Customer gateway device — a physical device or software application on your side of the Site-to-Site VPN connection. Target gateway — a generic term for the VPN endpoint on the Amazon side of the Site-to-Site VPN connection. Virtual private gateway (VGW) — VPN endpoint on the Amazon side of your Site-to-Site VPN connection that can be attached to a single VPC. Transit gateway — a transit hub that can be used to interconnect multiple VPCs and on-premises networks, and as a VPN endpoint for the Amazon side of the Site-to-Site VPN connection.
+
+# You can optionally enable acceleration for your Site-to-Site VPN connection via AWS Global Accelerator. 
+You can attach your Site-to-Site VPN to AWS Cloud WAN. 
+You can attach your Site-to-Site VPN to AWS Transit Gateway.
+
+Limitations: IPv6 traffic is not supported for VPN connections on a virtual private gateway.
+An AWS VPN connection does not support Path MTU Discovery. 
+It is recommended that you use non-overlapping CIDR blocks for your networks.
+
+# Virtual Private Gateway (VGW)
+VPN endpoint on the Amazon side of your Site-to-Site VPN connection that can be attached to a single VPC.
+When you create a VGW you need to assign an Amazon Autonomous System Number (ASN) or custom ASN.
+What is an ASN? An Autonomous System Number (ASN):  is a unique identifier that is globally allocated to each autonomous system (AS) that participates in the Internet.
+
+# Customer Gateway (CGW)
+A Customer Gateway is a resource that you create in AWS that represents the customer gateway device in your on-premises network.
+When you configure your CGW you'll set: 
+    BPG ASN for your customer gateway device, 
+    IP address of customer gateway external device, and 
+    Private certificate provisioned by AWS Certificate Manager (ACM).
+You will also need to provide additional configuration to your customer gateway device which will establish the connection between AWS and your on-premise network.
+
+# A transit gateway is a transit hub that you can use to interconnect your VPCs and your on-premises networks.
+
+# AWS Client VPN is a fully managed client-based VPN service that enables you to securely access AWS resources and resources in your on-premises network.”
+Amazon Web Services Client VPN lets users connect securely (over the internet) to both:
+    AWS-hosted resources (like EC2 instances, databases, etc.)
+    Your own internal (on-premises) network
+
+
+# A Transit Gateway VPN can support both IPv4 and IPv6 traffic inside the tunnels — not just one or the other. AWS Transit Gateway supports dual-stack configurations, allowing IPv4 and IPv6 traffic simultaneously within the same VPN tunnels.
+
+# You could use AWS Client VPN to securely connect to an RDS Instance that is only in a private subnet"
+
+# What is Network Address Translation (NAT)?
+A method of mapping an IP address space into another by modifying network address information in the IP header of packets while they are in transit across a traffic-routing device
+If you have a private network and you need to help gain outbound access to the internet, you would need to use a NAT gateway to re-map the Private IPs
+If you have two networks that have conflicting network addresses, you can use a NAT to make the addresses more agreeable
+
+# NAT Gateway is a fully managed NAT service to allow instances in your private subnet to establish outbound connections
+
+A NAT Gateway is redundant within a single subnet
+You need a NAT Gateway per subnet
+You pay:
+Per hour per NAT Gateway eg. $0.045
+Per GB data processed $0.045
+Eg. 1 Month and 3 NATs = $98.55
+
+
+# NAT Gateway has two connection modes:
+Public (Default)
+
+Instances in private subnets can connect to the internet through a public NAT gateway
+Cannot receive unsolicited inbound connections from the internet
+You must associate an Elastic IP (EIP) address
+
+Private
+
+Instances in private subnets can connect to other VPCs or your on-premises network through a private NAT gateway
+You can route traffic from the NAT gateway through a transit gateway or a virtual private gateway
+You cannot associate an elastic IP address with a private NAT gateway
+
+# NAT Instances (legacy) is an AWS managed IAM to launch a NAT onto an individual EC2 instances. NAT Instances required the customer to handle scaling
+
+# Jumpboxes are security hardened virtual machines that provide secure access to private subnets.
+
+EC2 instances that are security hardened
+Access private subnet resources via SSH or RCP
+Known as jumboxes because you are jumping from one box to access another.
+Known as bastions since it's something that gives protection against attack
+
+NATs cannot/should not be used as Bastions
+NAT Gateways/Instances are only intended for EC2 instances to gain outbound access to the internet for things such as security updates.
+
+# Amazon VPC Lattice is a fully managed application networking service that you use to connect, secure, and monitor the services for your application.
+Easily turn your AWS resources into services for a micro-services architecture.
+
+# A transit gateway is a network transit hub that you can use to interconnect your virtual private clouds (VPCs) and on-premises networks.
+
+# Traffic Mirroring sends a copy network traffic from a source ENI to target ENI, or UDP-enabled NLB or GWLB
+
+# AWS Network Firewall is a stateful, managed, network firewall and IDS/IPS for VPCs
+
+# VPC Peering allows you to connect one VPC with another over a direct network route using private IP addresses.
+VPC peering connection is not a gateway
+VPC peering connection not a VPN connection
+VPC peering connection does not rely on a separate piece of physical hardware
+There is no single point of failure for communication or a bandwidth bottleneck.
+
+# Create the peering connection
+Provide the two VPCs and it will return back a peering connection ID
+
+aws ec2 create-vpc-peering-connection \
+--vpc-id requester-vpc-id \
+--peer-vpc-id accepter-vpc-id
+
+
+Accept the peering connection
+aws ec2 accept-vpc-peering-connection \
+--vpc-peering-connection-id pcx-XXXXXXX
+
+Enable the routing of traffic between the two VPCs. Update your route tables so traffic can flow between the VPCs. You'll need to create a route in each of the VPCs
+aws ec2 create-route \
+--route-table-id rtb-requester \
+--destination-cidr-block accepter-vpc-cidr \
+--vpc-peering-connection-id pcx-XXXXXXX
+
+aws ec2 create-route \
+--route-table-id rtb-accepter \
+--destination-cidr-block requester-vpc-cidr \
+--vpc-peering-connection-id pcx-XXXXXXX
+
+You can update the inbound or outbound rules for your VPC security groups to reference security groups in the peered VPC.
+aws ec2 describe-security-group-references \
+--group-id sg-bbbb2222
+
+Vpc Peering 
