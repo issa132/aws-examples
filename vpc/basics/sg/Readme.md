@@ -106,12 +106,13 @@ aws iam add-role-to-instance-profile --instance-profile-name EC2SessionManagerPr
 
 Launch an instance into your subnet with an IPv6 address
 8.1 Launch an Amazon Linux 2023 instance into the subnet
+```sh
 aws ec2 run-instances --image-id ami-0156b61643fdfee5c \
   --instance-type t3.micro \
   --count 1 \
   --iam-instance-profile Name=EC2SessionManagerProfile \
   --network-interfaces DeviceIndex=0,Ipv6AddressCount=1,SubnetId=<SUBNET ID>
-
+```
 
 Elastic IP (EIP) address in AWS is a static IPv4 address
 A Static IP is an address that always stays the same.
@@ -147,44 +148,51 @@ aws ec2 allocate-address --domain vpc
 With --network-border-group you can pick very specific Availability Zones, Local Zones or Wavelength Zones.
 
 Associate an EIP
-
+```sh
 aws ec2 associate-address \
 --instance-id i-1234567890abcdef0 \
 --allocation-id eipalloc-0a33f63bceded1dff4
+```
 
 We then need to associate the Elastic IP to an instance. You could also use --network-interface-id to associate to a network interface.
 
 Disassociate an EIP
+```sh
 aws ec2 disassociate-address \
 --association-id eipalloc-0a33f63bceded1dff4
-
+```
+ 
 Deallocate (release) an EIP
+```sh
 aws ec2 release-address \
 --allocation-id eipalloc-0a33f63bceded1dff4
-
+```
 
 Reassociation
+```sh
 aws ec2 associate-address \
 --instance-id i-1234567890abcdef0 \
 --allocation-id eipalloc-0a33f63bceded1dff4 \
 --allow-reassociation
-
+```
 With --allow-reassociation you can tell an address to always attempt to reassociate with the same instance or network interface in the case of failure or restart. You can also tell it to explicitly not to with --no-allow-reassociation
 
 
 Recover
+```sh
 aws ec2 allocate-address \
 --domain vpc \
 --address "54.228.5.3"
-
+```
 You can attempt to (if available) recover or specify address during allocation.
 
 
 Custom
+```sh
 aws ec2 allocate-address \
 --domain vpc \
 --public-ipv4-pool ipv4pool-ec2-1234567890abcdef0
-
+```
 Bring-your-own (BYO) IPV4 address pool, and allocate one from that pool
 
 
@@ -276,6 +284,7 @@ To create a Gateway Endpoint, you must specify the VPC in which you want to crea
 
 
 # VPC Flow Logs allow you to capture IP traffic information through your VPC.
+```sh
 aws ec2 create-flow-logs \
     --resource-type VPC \
     --resource-ids vpc-xxxxxxxx \
@@ -283,6 +292,8 @@ aws ec2 create-flow-logs \
     --log-destination-type cloud-watch-logs \
     --log-destination arn:aws:logs:region:account-id:log-group:log-group-name \
     --deliver-logs-permission-arn arn:aws:iam::account-id:role/role-name
+```
+
 Flow Logs can be scoped for the following: VPC and Subnets, Elastic Network Interface (ENIs), Transit Gateway, and Transit Gateway Attachment.
 You can monitor traffic for: ACCEPT (traffic was accepted), REJECT (traffic that was rejected), and ALL (all accepted and rejected traffic).
 Logs can be delivered to either: Amazon S3 bucket, CloudWatch Logs, or Kinesis Data Firehose.
@@ -387,29 +398,46 @@ There is no single point of failure for communication or a bandwidth bottleneck.
 
 # Create the peering connection
 Provide the two VPCs and it will return back a peering connection ID
-
+```sh
 aws ec2 create-vpc-peering-connection \
 --vpc-id requester-vpc-id \
 --peer-vpc-id accepter-vpc-id
-
-
+```
+```sh
 Accept the peering connection
 aws ec2 accept-vpc-peering-connection \
 --vpc-peering-connection-id pcx-XXXXXXX
+```
 
 Enable the routing of traffic between the two VPCs. Update your route tables so traffic can flow between the VPCs. You'll need to create a route in each of the VPCs
+```sh
 aws ec2 create-route \
 --route-table-id rtb-requester \
 --destination-cidr-block accepter-vpc-cidr \
 --vpc-peering-connection-id pcx-XXXXXXX
-
+```
+```sh
 aws ec2 create-route \
 --route-table-id rtb-accepter \
 --destination-cidr-block requester-vpc-cidr \
 --vpc-peering-connection-id pcx-XXXXXXX
+```
+
 
 You can update the inbound or outbound rules for your VPC security groups to reference security groups in the peered VPC.
+```sh
 aws ec2 describe-security-group-references \
 --group-id sg-bbbb2222
+```
 
 Vpc Peering 
+wget http://35.183.96.205/
+wget http://35.183.96.205/ | cat
+wget -O http://35.183.96.205/
+wget -qO - http://35.183.96.205/
+
+make a request on private ip to see if it is working
+wget -qO - http://12.0.10.24
+
+
+
