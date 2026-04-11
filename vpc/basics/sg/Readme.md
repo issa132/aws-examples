@@ -440,4 +440,6 @@ make a request on private ip to see if it is working
 wget -qO - http://12.0.10.24
 
 
+Network Address Usage (NAU) is a metric applied to resources in your virtual network to help you plan for and monitor the size of your VPC
+NAU helps you ensure you don't run out of room in your VPC!
 
