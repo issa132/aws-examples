@@ -47,9 +47,50 @@ aws iam create-policy-version \
 --set-as-default
 ```
 
+# la seule action est de lister les buckets 
 Version: "2012-10-17"
 Statement:
   - Sid: "AccessToS3"
     Effect: "Allow"
     Action: "s3:ListBucket"
     Resource: "*"
+
+
+# this should only list this bucket: arn:aws:s3:::mycoolbucket-ab-1412
+# docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html
+Version: "2012-10-17"
+Statement:
+  - Sid: "AccessToS3"
+    Effect: "Allow"
+    Action: "s3:ListBucket"
+    Resource: "arn:aws:s3:::mycoolbucket-ab-1412"
+
+# now we are saying all buckets
+Version: "2012-10-17"
+Statement:
+  - Sid: "AccessToS3"
+    Effect: "Allow"
+    Action: "s3:ListBucket"
+    Resource: "arn:aws:s3:::*"
+
+
+# deleting policy
+aws iam delete-policy-version \
+--policy-arn arn:aws:iam::982383527471:policy/my-fun-policy \
+--version-id v2
+
+# list all our buckets 
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
