@@ -378,3 +378,47 @@ Accès direct au système
 🪟 Windows GUI ? → Fleet Manager
 🛠️ Problème grave ? → Serial Console
 
+
+# docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
+export AWS_ACCESS_KEY_ID=""
+export AWS_SECRET_ACCESS_KEY=""
+export AWS_DEFAULT_REGION=ca-central-1
+gp env AWS_ACCESS_KEY_ID=""
+gp env AWS_SECRET_ACCESS_KEY=""
+gp env AWS_DEFAULT_REGION=ca-central-1
+
+aws sts get-caller-identity
+
+# aws ec2 connect blog 
+# aws.amazon.com/blogs/compute/new-using-amazon-ec2-instance-connect-for-ssh-access-to-your-ec2-instances/
+# aws.amazon.com/blogs/compute/secure-connectivity-from-public-to-private-introducing-ec2-instance-connect-endpoint-june-13-2023/
+
+ssh-keygen -t rsa -f ec2connect
+Cette commande génère une paire de clés SSH RSA :
+    -t rsa : algorithme RSA
+    -f ec2connect : nom du fichier de sortie (crée ec2connect pour la clé privée et ec2connect.pub pour la clé publique)
+
+# awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2-instance-connect/send-ssh-public-key.html#examples
+# elle permet d'envoyer temporairement une clé publique SSH à une instance EC2 pour y accéder.
+
+aws ec2-instance-connect send-ssh-public-key \
+    --instance-id i-033ee47a499a786a0 \
+    --instance-os-user ec2-user \
+    --availability-zone ca-central-1a \
+    --ssh-public-key file://ec2connect.pub
+
+# ssh -i ec2connect ec2-user@3.99.178.17 : se connecte en SSH à l'instance via l'IP publique 3.99.178.17 en utilisant la clé privée ec2connect.
+ssh -i ec2connect ec2-user@3.99.178.17
+
+# chmod 400 ec2connect
+
+# connect to ec2 instance using RDP 
+Remote Desktop Protocol is a technology developed by Microsoft that lets you control another computer remotely as if you were sitting in front of it.
+In AWS, RDP connect means using Remote Desktop Protocol to access a Windows EC2 instance.
+
+# aws.amazon.com/blogs/aws/troubleshoot-boot-and-networking-issues-with-new-ec2-serial-console/
+# docs.aws.amazon.com/AWSEC2/latest/UserGuide/SysRq.html
+Amazon Linux is AWS's managed Linux distribution is based off CentOS and Fedora which in turn is based off Red Hat Linux (RHEL)
+
+Amazon Linux Extras is a feature of Amazon Linux 2 that provides a way for users to install additional software packages that are not included in the default Amazon Linux 2 distribution.
+
