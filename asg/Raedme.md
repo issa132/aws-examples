@@ -90,6 +90,7 @@ Acronyme                Nom complet                     Couche                  
 ALB                 Application Load Balancer             7 (HTTP)          Apps web, microservices
 NLB                 Network Load Balancer                 4 (TCP/UDP)       Haute performance
 GWLB                Gateway Load Balancer                 3 (réseau)        Firewalls, sécurité réseau
+CLB                 (Classic Load Balancer)Legacy         Layer 4 & 7 (not recommended)
 
 An attached ELB means that the ASG can use the Load Balancer's health check instead of EC2
 
