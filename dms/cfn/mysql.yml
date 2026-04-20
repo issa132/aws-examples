@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: RDS Postgress
+Parameters:
+  VpcId:
+    Type: String
+  Username:
+    Type: String
+    Default: postgres
+  Password:
+    Type: String
+    Default: password
+  BackupRetentionPeriod:
+    Type: Number
+    Default: 0
+  InstanceClass:
+    Type: String
+    Default: db.t3.micro
+  Engine:
+    Type: String
+    Default: postgres
+  EngineVersion:
+    Type: String
+    Default: 8.8.35
+  PubliclyAccessible:
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: true
+  DeletionProtection:
+    Type: String
+    AllowedValues:
+      - true
+  RdsDatabaseName:
+    Type: String
+    Default: "mydatabase"
+  RdsPort:
+    Type: Number
+    Default: 3306
+  Subnets:
+    Type: 'List<AWS::EC2::Subnet::Id>'
+    Description: A list of subnets for the Auto Scaling group
+Resources:
+  DbSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub "Security Group for RDS Instance"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref RdsPort
+          ToPort: !Ref RdsPort
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref VpcId
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: "My DB Subnet Group"
