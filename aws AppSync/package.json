@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "aws-amplify": "^6.0.28",
+    "graphql-tag": "^2.12.6"
+  },
+  "type": "module",
+  "name": "appsync",
+  "description": "npm install aws-amplify",
+  "version": "1.0.0",
+  "main": "aws-exports.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
