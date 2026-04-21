@@ -14,3 +14,6 @@ aws cloudformation deploy \
 --no-execute-changeset \
 --region ca-central-1 \
 --stack-name $STACK_NAME
+
+# ui.docs.amplify.aws
+# docs.amplify.aws/gen2/reference/amplifyconfiguration/
