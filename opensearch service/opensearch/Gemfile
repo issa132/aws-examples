@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# gem "rails"
+gem 'opensearch-ruby'
+gem 'ox'
+gem 'pry'
+gem 'opensearch-aws-sigv4'
