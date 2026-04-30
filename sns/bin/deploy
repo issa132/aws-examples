@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -e
+
+# we need the absolute path because relative path was
+root_path=$(realpath .)
+#config_path="$(realpath ..)/python.toml"
+
+#if [ ! -f "$config_path" ]; then
+#  echo "$config_path does not exist."
+#  exit 1
+#fi
+
+# sam deploy
+# =================
+# https://docs.aws.amazon.com/serverless-application-m
+# https://docs.aws.amazon.com/serverless-application-m
+# -----------------
+echo "== SAM deploy..."
+#echo "loading configuration: $config_path"
+
+sam deploy \
+  --template-file "./.aws-sam/build/template.yaml" \
+  --stack-name "sns-basics-lamba-py" \
+  --capabilities "CAPABILITY_IAM" \
+  #--config-file "$config_path" \
+  --no-execute-changeset \
+  --region ca-central-1

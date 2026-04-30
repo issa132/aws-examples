@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+# we need the absolute path of samconfig.toml
+# because relative path was giving us trouble
+root_path=$(realpath .)
+template_path="${root_path}/template.yml"
+
+# sam build
+# =================
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-api.html
+# https://docs.aws.amazon.com/serverless-application-m
+# https://docs.aws.amazon.com/serverless-application-m
+# -----------------
+# This will prepare the artifact to be uploaded to S3
+# .aws-sam/build/template.yaml
+echo "== SAM build..."
+echo "using template: ${template_path}"
+sam build \
+  --template-file "${template_path}"
