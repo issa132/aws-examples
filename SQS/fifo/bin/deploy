@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-fifoqueue
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html
-echo "== deploy SQS fifo"
+echo "== deploy SQS Standard"
 
 STACK_NAME="sqs-standard"
 

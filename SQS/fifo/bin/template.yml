@@ -3,7 +3,7 @@ Description: A Simple SQS queue
 Resources:
   MyQueue:
     Type: AWS::SQS::Queue
-    Properties:
+    # Properties:
       # QueueName: "StandardQueue"
       # docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html
-      FifoQueue: true
+      # FifoQueue: true

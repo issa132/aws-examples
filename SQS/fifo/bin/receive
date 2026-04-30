@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+root_path=$(realpath .)
+# message_attributes_path="file://${root_path}/send-message.json"
+
+QUEUE_URL=https://sqs.ca-central-1.amazonaws.com/982383527471/sqs-standard-My
+echo "== receive"
+
+aws sqs receive-message \
+--queue-url $QUEUE_URL \
+--attribute-names All \
+--message-attribute-names All \
+--max-number-of-messages 10
