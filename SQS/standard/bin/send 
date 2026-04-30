@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+root_path=$(realpath .)
+message_attributes_path="file://${root_path}/send-message.json"
+
+QUEUE_URL=https://sqs.ca-central-1.amazonaws.com/982383527471/sqs-standard-My
+echo "== send"
+aws sqs send-message \
+--queue-url $QUEUE_URL \
+--message-body "Hello Mars 1!" \
+--delay-seconds 0 \
+--message-attributes $message_attributes_path
+
+aws sqs send-message \
+--queue-url $QUEUE_URL \
+--message-body "Hello Mars 2!" \
+--delay-seconds 1 \
+--message-attributes $message_attributes_path
+
+aws sqs send-message \
+--queue-url $QUEUE_URL \
+--message-body "Hello Mars 3!" \
+--delay-seconds 2 \
+--message-attributes $message_attributes_path
+
+aws sqs send-message \
+--queue-url $QUEUE_URL \
+--message-body "Hello Mars 4 !" \
+--delay-seconds 3 \
+--message-attributes $message_attributes_path
+
+aws sqs send-message \
+--queue-url $QUEUE_URL \
+--message-body "Hello Mars 5!" \
+--delay-seconds 4 \
+--message-attributes $message_attributes_path
+
