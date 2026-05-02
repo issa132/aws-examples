@@ -88,3 +88,8 @@ gem 'bunny'
 gem 'stomp'
 gem 'ox'
 gem 'pry'
+
+
+# github.com/njh/ruby-mqtt
+# github.com/stompgem/stomp
+# meschbach.com/kb/simple-ruby-stomp-client.html

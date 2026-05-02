@@ -5,17 +5,20 @@ passcode = ''
 host = ''
 port = ''
 
-config = {
-  hosts: [
-    login: login,
-    passcode: passcode,
-    host: host,
-    port: port,
-    ssl: false
-  ]
-}
+#onfig = {
+# hosts: [
+#   login: login,
+#   passcode: passcode,
+#   host: host,
+#   port: port,
+#   ssl: false
+# ]
+# }
 
-client = Stomp::Client.new(config)
+connection_string = 'stomps://admin:Testing123456!@b-6b39d23f-d358-4850...'
+
+#client = Stomp::Client.new(config)
+client = Stomp::Client.new(connection_string)
 client.subscribe(dest) do |message|
   client.acknowledge(message)
 end
