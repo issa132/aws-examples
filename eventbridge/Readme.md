@@ -270,3 +270,15 @@ NetworkIn
 You select both Alarms and create a Composite Alarm 
 
 The only action you can configure for a composite alarm is an SNS Topic
+
+ 
+Claude a répondu : What is an Event Bus?
+What is an Event Bus? An event bus receives events from a source and routes events to a target based on rules
+
+Event
+  ↓
+[Event Bus]
+  ├── Rule → [Event][Event] → Target
+  └── Rule → [Event][Event][Event][Event] → Target
+EventBridge is a serverless event bus service that is used for application integration by streaming real-time data to your applications.
+

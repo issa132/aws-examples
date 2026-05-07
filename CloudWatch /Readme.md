@@ -299,3 +299,12 @@ You specify the location of the log file and what log group you want the log to 
 bash
 sudo service awslogsd stop
 sudo service awslogsd start
+
+# What is an Event Bus?
+An event bus receives events from a source and routes events to a target based on rules
+Event
+  ↓
+[Event Bus]
+  ├── Rule → [Event][Event] → Target
+  └── Rule → [Event][Event][Event][Event] → Target
+EventBridge is a serverless event bus service that is used for application integration by streaming real-time data to your applications.

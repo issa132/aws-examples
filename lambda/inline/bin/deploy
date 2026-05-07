@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -e
+
+#if [ -z "$1" ]; then
+#  echo "No namespace argument supplied eg. bin/deploy x1"
+#  echo "This is how know what toml file to load eg. config/x1/config.toml"
+#  exit 1
+#fi
+
+# we need the absolute path because relative path was giving us trouble
+#root_path=$(realpath .)
+#config_path="$(realpath ..)/config/$1/python.toml"
+#config_path="$(realpath ..)/python.toml"
+
+if [ ! -f "$config_path" ]; then
+  echo "$config_path does not exist."
+  exit 1
+fi
+
+# sam deploy
+# ==================
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-deploying.html
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html
+# ------------------
+echo "== SAM deploy..."
+# echo "loading configuration: $config_path"
+
+sam deploy \
+#  --config-file "$config_path" \
+  --template-file "./.aws-sam/build/template.yaml" \
+  --stack-name "inline-lambda-python" \
+#  --tags group=evaluators \
+  --capabilities "CAPABILITY_IAM"
