@@ -1,0 +1,3 @@
+# faker.readthedocs.io/en/master/
+# pip install -r requirements.txt
+faker==24.1

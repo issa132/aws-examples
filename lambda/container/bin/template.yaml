@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  InlineLambda:
+    Type: AWS::Serverless::Function
+    Metadata:
+      DockerContext: /workspace/AWS-Examples/lambda
+      Dockerfile: Dockerfile
+      SamResourceId: InlineLambda
+    Properties:
+      PackageType: Zip
+      Handler: function.handler
+      Runtime: python3.12
+      CodeUri: InlineLambda

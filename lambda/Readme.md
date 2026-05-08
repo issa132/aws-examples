@@ -178,7 +178,11 @@ sam build
 sam deploy
 ```
 
+# container = ecr sur l interface graphique
 
+# sam package info: 
+# docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-package.html
 
+# on fait ./bin/build apres ./bin/package on fait ./bin/deploy 
 
 

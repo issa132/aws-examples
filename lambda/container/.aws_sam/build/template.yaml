@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+# docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-codeuri
+Resources:
+  InlineLambda:
+    Type: AWS::Serverless::Function
+    Metadata:
+      DockerContext: /workspace/AWS-Examples/lambda/container
+      Dockerfile: Dockerfile
+      SamResourceId: InlineLambda
+    Properties:
+      PackageType: Image
+      Handler: function.handler
+      Runtime: python3.12
+      ImageUri: inlinelambda:latest
