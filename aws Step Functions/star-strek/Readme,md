@@ -1,0 +1,166 @@
+# docs.aws.amazon.com/cli/latest/reference/s3api/put-bucket-notification-configuration.html
+
+## Create Bucket
+
+aws s3 mb s3://sf-star-trek-131241 --region us-east-1
+
+# docs.aws.amazon.com/cli/v1/userguide/cli-usage-shorthand.html
+
+## Enable EventBridge Communication
+
+```sh
+aws s3api put-bucket-notification-configuration \
+--region us-east-1 \
+--bucket sf-star-trek-131241 \
+--notification-configuration '
+{
+  "EventBridgeConfiguration": {}
+}
+ 
+```
+
+# claude a répondu : docs.docs.aws.amazon.com/cli/latest/reference/stepfunctions/
+# docs.aws.amazon.com/cli/latest/reference/stepfunctions/create-state-machine.html
+
+# ## Upload files
+
+aws s3 cp picard.jpg s3://sf-star-trek-131241/picard --region us-east-1
+
+
+# cleanup
+aws s3 rm s3://sf-star-trek-131241/picard.jpg --region us-east-1
+aws s3 rb s3://sf-star-trek-131241 --region us-east-1
+
+
+## References
+# https://docs.aws.amazon.com/AmazonS3/latest/userguide/ev-events.html
+# docs.aws.amazon.com/step-functions/latest/dg/input-output-resultpath.html
+# docs.aws.amazon.com/rekognition/latest/dg/celebrities.html
+# docs.docs.aws.amazon.com/rekognition/latest/dg/celebrities-procedure-image.html
+# docs.aws.amazon.com/rekognition/latest/APIReference/API_RecognizeCelebrities.html
+# docs.aws.amazon.com/rekognition/latest/dg/images-s3.html
+# docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html#eb-filtering-prefix-matching
+# docs.aws.amazon.com/rekognition/latest/customlabels-dg/md-create-dataset-s3.html
+
+---
+{
+  "source": ["aws.s3"],
+  "detail-type": ["Object Created"],
+  "detail": {
+    "bucket": {
+      "name": ["sf-star-trek-131241"]
+    },
+    "object": {
+      "key": [{
+        "prefix": "inputs/"
+      }]
+    }
+  }
+}
+
+Ce JSON est un Event Pattern EventBridge. Il sert à filtrer les événements S3 pour ne déclencher une règle que lorsque des conditions précises sont remplies :
+
+"source": ["aws.s3"] → l'événement vient de S3
+"detail-type": ["Object Created"] → uniquement quand un objet est créé (upload)
+"bucket.name": ["sf-star-trek-131241"] → uniquement dans ce bucket précis
+"key": [{"prefix": "inputs/"}] → uniquement si le fichier est déposé dans le dossier inputs/
+
+En résumé : quand quelqu'un uploade un fichier dans s3://sf-star-trek-131241/inputs/, EventBridge déclenche automatiquement la Step Function pour traiter ce fichier. C'est le point de départ du pipeline.
+
+----------
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Pass",
+  "States": {
+    "Pass": {
+      "Type": "Pass",
+      "End": true,
+      "ResultPath": "$.MyNewBucket",
+      "OutputPath": "$..bucket.name"
+    }
+  }
+}
+
+Ce JSON est une State Machine Step Functions minimaliste. Voici ce que fait chaque partie :
+
+"Type": "Pass" → état qui ne fait rien, il passe juste les données (utile pour tester ou transformer)
+"ResultPath": "$.MyNewBucket" → le résultat de l'état est stocké dans une nouvelle clé MyNewBucket dans le JSON d'entrée
+"OutputPath": "$..bucket.name" → filtre la sortie pour ne garder que la valeur de bucket.name (notation JSONPath récursive avec ..)
+"End": true → c'est le dernier état, la machine s'arrête ici
+
+En résumé : c'est un exemple pédagogique qui montre comment utiliser ResultPath et OutputPath ensemble pour extraire et reshaper des données entre les états, sans appeler de service externe.
+
+
+-----
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "RecognizeCelebrities",
+  "States": {
+    "RecognizeCelebrities": {
+      "Type": "Task",
+      "Parameters": {
+        "Image": {
+          "S3Object": {
+            "Bucket.$": "$..bucket.name",
+            "Name.$": "$..object.key.name"
+          }
+        }
+      },
+      "Resource": "arn:aws:states:::aws-sdk:rekognition:recognizeCelebrities",
+      "End": true
+    }
+  }
+}
+
+
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "RecognizeCelebrities",
+  "States": {
+    "RecognizeCelebrities": {
+      "Type": "Task",
+      "Parameters": {
+        "Image": {
+          "S3Object": {
+            "Bucket.$": "$.detail.bucket.name",
+            "Name.$": "$.detail.object.key"
+          }
+        }
+      },
+      "Resource": "arn:aws:states:::aws-sdk:rekognition:recognizeCelebrities",
+      "End": true
+    }
+  }
+}
+
+Cette State Machine Step Functions appelle AWS Rekognition pour reconnaître des célébrités dans une image. Voici le détail :
+
+"StartAt": "RecognizeCelebrities" → la machine démarre directement sur cet état
+"Type": "Task" → cet état appelle un service AWS externe
+"Resource": "arn:aws:states:::aws-sdk:rekognition:recognizeCelebrities" → appelle directement l'API Rekognition RecognizeCelebrities via le SDK AWS intégré dans Step Functions
+"Parameters" → construit la requête envoyée à Rekognition :
+
+"Bucket.$": "$..bucket.name" → récupère dynamiquement le nom du bucket depuis l'événement S3 entrant
+"Name.$": "$..object.key.name" → récupère dynamiquement le nom du fichier image
+
+
+"End": true → la machine s'arrête après cet état
+
+En résumé : quand un fichier est uploadé dans S3, cette machine récupère automatiquement le bucket et le nom du fichier, les envoie à Rekognition, qui analyse l'image et retourne les célébrités détectées. C'est le cœur du pipeline star-trek.
+
+# bucket policy s3 to lets rekognition read files
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "rekognition.amazonaws.com"
+      },
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::your-bucket-name/*"
+    }
+  ]
+}
+
+
