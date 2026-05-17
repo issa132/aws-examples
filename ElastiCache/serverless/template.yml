@@ -1,0 +1,27 @@
+Resources:
+  EC2InstanceProfile:
+    Properties:
+      - !Ref SSMRole
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      InstanceType: !Ref InstanceType
+      ImageId: !Ref ImageId
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          SubnetId: !Ref SubnetId
+          AssociatePublicIpAddress: true
+          GroupSet:
+            - !Ref SecurityGroupId
+          DeleteOnTermination: true
+
+      UserData:
+        Fn::Base64: |
+            #!/bin/bash
+            sudo apt install lsb-release curl gpg
+            sudo apt install lsb-release curl gpg
+            curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+            sudo apt-get update
+            sudo apt-get install redis
