@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AWSCloudTrailCreateLogStream20141110",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream"
+      ],
+      "Resource": [
+        "arn:aws:logs:ca-central-1:accountID:log-group:log_group_name:log-stream:CloudTrail_log_stream_name_prefix*"
+      ]
+    },
+    {
+      "Sid": "AWSCloudTrailPutLogEvents20141101",
+      "Effect": "Allow",
+      "Action": [
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:aws:logs:ca-central-1:accountID:log-group:log_group_name:log-stream:CloudTrail_log_stream_name_prefix*"
+      ]
+    }
+  ]
+}
+
+
+---------------------
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AWSCloudTrailCreateLogStream20141110",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream"
+      ],
+      "Resource": [
+        "arn:aws:logs:ca-central-1:982383527471:log-group:mycloudtrail:log-stream:*"
+      ]
+    },
+    {
+      "Sid": "AWSCloudTrailPutLogEvents20141101",
+      "Effect": "Allow",
+      "Action": [
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        "arn:aws:logs:ca-central-1:982383527471:log-group:mycloudtrail:log-stream:*"
+      ]
+    }
+  ]
+}
