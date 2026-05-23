@@ -100,3 +100,12 @@ update the timestamps in the user-item interaction data to be in Unix time epoch
 make a schema json for our user data dataset to import into Amazon Personalize
 update the user interaction timestamp to not have the decimal placeupdate the user interaction timestamp to not have the decimal place
 
+write me code for python that will use get_recommendations for amazon personalizewrite me code for python that will use get_recommendations for amazon personalize
+
+
+# pip install -r requirements.txt
+#  https://boto3.https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-runtime.html
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/personalize-runtime/client/get_recommendations.html
+
+
