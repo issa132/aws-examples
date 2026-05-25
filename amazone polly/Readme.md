@@ -72,3 +72,17 @@ gem 'nokogiri'
 
 # https://docs.https://docs.aws.amazon.com/sdk-for-ruby/v3/api/
 # https://docs.https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/Polly/Client.html
+
+
+## create bucket and upload file
+aws s3 mb s3://rekog-example-1421
+aws s3 cp andrew.jpg s3://rekog-example-1421/andrew.jpg
+
+## Run ruby code
+
+bundle install
+bundle exec ruby main.rb
+
+# https://docs.aws.amazon.com/rekognition/latest/customlabels-dg/md-create-dataset-s3.html
+# https://repost.https://repost.aws/questions/QU_qapo6hFTOSnkaG6MUMZRg/cross-account-s3-buck-access-from-rekognition-service
+
