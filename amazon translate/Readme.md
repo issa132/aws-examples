@@ -37,3 +37,7 @@ gem 'nokogiri'
 
 resp 
 resp.translate_text
+
+
+
+
