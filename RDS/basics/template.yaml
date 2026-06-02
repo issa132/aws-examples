@@ -1,0 +1,107 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Webserver RDS Postgres Instance with Secrets Manager
+Parameters:
+  WebServerStack:
+    Type: String
+  RdsSecretArn:
+    Type: String
+  Username:
+    Type: String
+  BackupRetentionPeriod:
+    Type: Number
+    Default: 0
+  InstanceClass:
+    Type: String
+    Default: db.t2.micro
+  EngineVersion:
+    Type: String
+    Default: '11.5'
+  PubliclyAccessible:
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: false
+  DeletionProtection:
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: false
+  RdsDatabaseName:
+    Type: String
+  RdsPort:
+    Type: Number
+    Default: 5432
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  WebServerSGGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+  Subnets:
+    Type: 'List<AWS::EC2::Subnet::Id>'
+    Description: A list of subnets for the Auto Scaling group
+    Default: "subnet-0d8058cb02f147a86,subnet-0e0fd31733061237d"
+
+Resources:
+  RDSPostgresSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub "Security Group for ${WebServerStack} RDS Instance"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref RdsPort
+          ToPort: !Ref RdsPort
+          SourceSecurityGroupId: !Ref WebServerSGGroupId
+      VpcId: !Ref VpcId
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: "My DB Subnet Group"
+      SubnetIds: !Ref Subnets
+
+  RdsInstance:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: 'Delete'
+    UpdateReplacePolicy: 'Delete'
+    Properties:
+      MasterUsername: !Ref Username
+      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref RdsSecretArn, ':SecretString:password}}' ]]
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      AllocatedStorage: '20'
+      AllowMajorVersionUpgrade: true
+      AutoMinorVersionUpgrade: true
+      Port: !Ref RdsPort
+      EnableIAMDatabaseAuthentication: false
+      BackupRetentionPeriod: !Ref BackupRetentionPeriod
+      DBInstanceClass: !Ref InstanceClass
+      DBName: !Ref RdsDatabaseName
+      Engine: postgres
+      DeletionProtection: !Ref DeletionProtection
+      EngineVersion: !Ref EngineVersion
+      PubliclyAccessible: !Ref PubliclyAccessible
+      VPCSecurityGroups:
+        - !GetAtt RDSPostgresSG.GroupId
+
+Outputs:
+  StackName:
+    Value: !Ref AWS::StackName
+  RdsUsername:
+    Value: !Ref Username
+    Export:
+      Name: !Sub ${AWS::StackName}RdsUsername
+  RdsPort:
+    Value: !Ref RdsPort
+    Export:
+      Name: !Sub ${AWS::StackName}RdsPort
+  RdsDatabaseName:
+    Value: !Ref RdsDatabaseName
+    Export:
+      Name: !Sub ${AWS::StackName}RdsDatabaseName
+  RdsEndpoint:
+    Value: !GetAtt RdsInstance.Endpoint.Address
+    Export:
+      Name: !Sub ${AWS::StackName}RdsEndpoint
+
+      
