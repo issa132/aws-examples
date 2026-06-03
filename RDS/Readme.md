@@ -254,3 +254,288 @@ CREATE TABLE tasks (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+
+# RDS Proxy
+RDS Proxy create a connection pooler so that short-lived AWS Lambda functions connecting to RDS does not quickly exhaust all connections.
+
+A connection pooler reuses existing connections reducing the amount connections opening and closing.
+RDS Proxy basically does what something like PGBouncer does for Postgres. PGBouncer is an open-source connection pooler.
+
+Optimized Reads and Writes
+RDS Optimized Reads and Writes allow database operations to maximize performance, efficiency, and throughput:
+
+    Writes 0.5x faster
+    Reads 2x faster
+
+RDS Optimized Reads and Writes utilizes NVMe-based SSD block storage instead of AWS EBS for temporary tables for greater performance
+Queries that use temporary tables:
+
+    sorts, hash aggregations, high-load joins, and Common Table Expressions (CTEs)
+
+RDS Optimized Reads and Writes are available for specific combination of Instance Classes and Engine Versions: eg.
+
+        db.r5b + MySQL 8.0
+        Some DB engines only allow for optimized reads
+        Reads and Writes have different requirements
+        Additional database configuration may be required to take advantage of optimize reads and write
+
+ 
+# RDS – IAM Authentication
+IAM Authentication allows you to authenticate with an IAM authentication token to an RDS instance's database instead of using a password
+
+Works with:
+
+    MySQL
+    Maria DB
+    Postgres
+
+An authentication token is a unique string of characters that Amazon RDS generates on request using AWS Signature Version 4 (AWS SigV4)
+
+    Each token has a lifetime of 15 minutes
+    You can also still use standard database authentication alongside IAM Authentication
+    Users can use IAM Authentication instead of having to use a password.
+    EC2 instances can use IAM Authentication instead of having to use a password
+    Enabling IAM Authentication on an RDS instance
+
+bash
+aws rds modify-db-instance \
+  --db-instance-identifier mydbinstance \
+  --apply-immediately \
+  --enable-iam-database-authentication
+
+# Create a policy and attach to user or role to allow ability to authenticate as specific users.
+json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "rds-db:connect"
+      ],
+      "Resource": [
+        "arn:aws:rds-db:us-east-2:123456789012:dbuser:my-hello/brown",
+        "arn:aws:rds-db:us-east-2:123456789012:dbuser:db-hello/bayko"
+      ]
+    }
+  ]
+}
+Create db users and grant database access (Postgres example)
+sql
+CREATE USER brown; GRANT db-hello TO brown;
+CREATE USER bayko; GRANT db-hello TO bayko;
+
+Generate Auth Token to be used in place of password when authenticating
+bash
+export RDSHOST="db-hello.123456789012.ca-central-1.rds.amazonaws.com"
+export PGPASSWORD="$(aws rds generate-db-auth-token \
+  --hostname $RDSHOST \
+  --port 5432 \
+  --region ca-central-1 \
+  --username brown )"
+
+#  RDS – Kerberos Authentication
+Kerberos is a network authentication protocol which is also directly integrated into Microsoft Active Directory
+
+RDS support for Kerberos and Active Directory provides the benefits of single sign-on and centralized authentication of database users.
+
+Works with:
+
+    AWS Directory Service for Microsoft Active Directory
+    Your own on-premises Active Directory.
+
+Can be used with:
+
+    Microsoft SQL Server
+    Postgres
+    MySQL
+    Oracle
+    Microsoft SQL Server and PostgreSQL DB instances support one and two-way forest trust relationships.
+    Oracle DB instances support one-and two-way external and forest trust relationships.
+
+# RDS – Secrets Manager Integration
+AWS Secrets Manager can manage an RDS instance's master user password, allowing it to be rotated out.
+Does not work with:
+
+    Microsoft SQL Server
+    Amazon RDS Blue/Green Deployments
+    Amazon RDS Custom
+    Oracle Data Guard switchover
+    RDS for Oracle with CDB
+    The secret will be rotated every seven days by default
+    Web-apps need to be configured to access the password programmatically from Secrets Manager
+    If you delete a DB instance the secret is also deleted
+
+Let Secrets manager manage master user password for RDS
+bash
+aws rds modify-db-instance \
+  --db-instance-identifier mydbinstance \
+  --db-instance-class db.m5.large \
+  --apply-immediately \
+  --manage-master-user-password
+
+RDS generates the master user password and manages it throughout its lifecycle in Secrets Manager.
+
+# RDS – Master User Account
+Master User Account in RDS is the initial database account that's created when you provision a new DB instance.
+This account is granted full administrative privileges on the database:
+
+    Creating tables
+    Creating schemas
+    Performing SQL operations
+
+Its recommended to not directly use the Master User Account for daily use
+
+    Instead. You should create database users with the least of amount of permission to perform specific duties
+
+Master User Account username and password is set at the time of creation of the RDS instance:
+bash
+aws rds create-db-instance \
+  --db-instance-identifier mydbinstance \
+  --allocated-storage 20 \
+  --db-instance-class db.t3.micro \
+  --engine mysql \
+  --master-username mymasteruser \
+  --master-user-password mysecurepassword
+
+You can reset the Master User Account password:
+bash
+aws rds modify-db-instance \
+  --db-instance-identifier your-instance-identifier \
+  --master-user-password 'new_password' \
+  --apply-immediately
+
+The username will be visible in the AWS console.
+
+# RDS – Activity Streams
+Database Activity Streams allows you to control administrator access to data streams to secure both external and internal security threats
+Turning on Activity Streams via the AWS CLI
+bash
+aws rds start-activity-stream \
+  --mode async \
+  --kms-key-id my-kms-key-arn \
+  --resource-arn my-instance-arn \
+  --engine-native-audit-fields-included \
+  --apply-immediately
+
+    Amazon RDS pushes activities to an Amazon Kinesis data stream in near real time.
+    Kinesis stream is created automatically.
+
+        activity streams feature in Amazon RDS is free, Kinesis is not
+
+
+    From Kinesis, you can monitor the activity stream, or other services and applications can consume the activity stream for further analysis.
+
+# RDS – Parameter Groups
+Parameter group acts as a container for engine configuration values that are applied to one or more DB instances. Parameter groups let you change database parameters specify how the database is configured.
+Modifying a parameters group to change database parameters via AWS CLI
+bash
+aws rds modify-db-parameter-group \
+  --db-parameter-group-name mydbparametergroup \
+  --parameters "ParameterName=max_connections,ParameterValue=250,ApplyMethod=immediate" \
+               "ParameterName=max_allowed_packet,ParameterValue=1024,ApplyMethod=immediate"
+Each database engine will completely different database parameters:
+Postgres database parameter examples:
+
+    work_mem: Memory for sort operations; increase for complex queries.
+    shared_buffers: Memory for shared buffers; typically 25%-40% of system memory.
+    maintenance_work_mem: Memory for maintenance operations; increase for faster vacuuming/indexing.
+    effective_cache_size: Helps query planner with memory available for caching.
+    checkpoint_completion_target: Spreads checkpoint writes; closer to 1.0 for even spread.
+    wal_buffers: Size of WAL buffer; increase to batch writes and reduce I/O.
+
+# RDS – Public Accessibility
+RDS Public Access(sible) option changes if the DNS Endpoint will resolve to the private IP address from traffic from outside the VPC.
+bash
+aws rds create-db-instance \
+  --db-instance-identifier mypublicdbinstance \
+  --db-instance-class db.t3.micro \
+  --engine mysql \
+  --allocated-storage 20 \
+  --master-username adminuser \
+  --master-user-password securepassword123 \
+  --publicly-accessible \
+  --backup-retention-period 7 \
+  --engine-version 8.0.23
+Public Access does not override Security Groups rules so ensure you allow inbound traffic on your specific DB ports.
+Public Access feature is useful when you are confident with password authentication and security groups and you want the convenience to connect to RDS instance without having to use an intermediate way of accessing the RDS instance's database.
+
+# RDS – Establishing Public Connections
+Public Access RDS Connection Options
+When the DNS Endpoint with Public access on there are a few options for connecting.
+Use a Database management / DB IDE tool to establish a connection eg. TablePlus, Dbeaver, DataGrip, Navicat
+Use AWS CloudShell and use a database client or database driver via code to establish a connection
+Use a database client via your local terminal eg. psql, mysql
+
+    Programmatically connect with a database driver from your language of choice eg. JDBC
+
+        Generally you will do this via a web server
+
+# RDS – Establishing Public Connections
+What is a connection url string?
+A connection url string is a single string containing all the parameters to connect to a database.
+Its a convenient way to quickly configure a connection for database drivers and database command line clients
+The connection string may vary between database drivers and database command line clients.
+
+MySQL Format: mysql://[hostname]:[port]/[databaseName]?[properties]
+MariaDB Format: mariadb://[hostname]:[port]/[databaseName]?[properties]
+PSQL Format: postgresql://[username]:[password]@[hostname]:[port]/[databaseName]?[properties]
+Oracle Format: oracle:thin:@[hostname]:[port]:[SID] or jdbc:oracle:thin:@//[hostname]:[port]/[serviceName]
+SQL Server Format: sqlserver://[hostname]:[port];databaseName=[databaseName];user=[user];password=[password]
+abaseName=mydatabase;user=myusername;password=mypassword
+
+bash
+psql postgresql://andrew:testing123@my-db.123456789012.ca-central-1.rds.amazonaws.com:5432/mydatabase
+Example of using a connection string to connect via the PSQL command line client
+
+#  Default Ports for DB EnginesDefault Ports for DB Engines
+
+    MySQL: 3306
+    PostgreSQL: 5432
+    Oracle: 1521
+    SQL Server: 1433
+    Aurora MySQL: 3306
+    Aurora PostgreSQL: 5432
+
+# RDS – Establishing Private Connections
+Private RDS Connection Options
+
+    Launch a Cloud9 server (in a public subnet) in the same VPC
+    Connect through a Bastion or Jumpbox and tunnel through the box
+    Launch an EC2 instance and connect via SSH or Sessions manager and establish a connection
+    Use AWS Client VPN to connect your machine to your VPC and establish a connection to your VPC
+    For On-premise using AWS Direct Connect they can join from their on-premise network.
+    AWS CloudShell can't be used because it doesn't reside within a customer manager VPC
+
+# RDS – Security Groups
+An RDS Instance have a security group. In order to establish a connection for both public and private connections you need to open the DB ports inbound.
+!!!  When a database hangs during a connection its often due to misconfigured Security Group rules.When a database hangs during a connection its often due to misconfigured Security Group rules.
+
+# RDS Blue Green Deployments
+RDS Blue/Green Deployments copies a production database environment in a separate, synchronized staging environment.
+
+Test database changes in a safe staging environment without affecting the production environment.
+Stay current with database patches and system updates.
+Implement and test newer database features.
+
+Creating a blue/green deployment for RDS via AWS CLI
+bash
+aws rds create-blue-green-deployment \
+  --blue-green-deployment-name my-blue-green-deployment \
+  --source arn:aws:rds:us-east-2:123456789012:db:mydb1 \
+  --target-engine-version 8.0.31 \
+  --target-db-parameter-group-name mydbparametergroup \
+  --target-db-instance-class db.m5.8xlarge \
+  --upgrade-target-storage-config
+Different database engines will require different prerequisites steps before replication.
+
+# RDS Extended Support
+Amazon RDS Extended Support allows you to run your database on a major engine version past the RDS end of standard support date for an additional cost.
+
+    gives you more time to upgrade to a supported major engine version
+    Amazon RDS will supply patches for Critical and High CVEs as defined by the National Vulnerability Database (NVD) CVSS severity ratings
+    available for up to 3 years past the RDS end of standard support date for a major engine version
+
+        After this point AWS will automatically upgrade your RDS engine version
+
