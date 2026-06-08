@@ -1,0 +1,23 @@
+# Amazon Macie
+Macie is a fully managed service that continuously monitors S3 data access activity for anomalies, and generates detailed alerts when it detects risk of unauthorized access or inadvertent data leaks.
+
+Macie works by uses Machine Learning to Analyze your CloudTrail logs.
+
+Macie has a variety of alerts:
+
+    Anonymized Access
+    Config Compliance
+    Credential Loss
+    Data Compliance
+    File Hosting
+    Identity Enumeration
+    Information Loss
+    Location Anomaly
+    Open Permissions
+    Privilege Escalation
+    Ransomware
+    Service Disruption
+    Suspicious Access
+
+Macie's will identify your most at-risk users which could lead to a compromise.
+
