@@ -57,5 +57,6 @@ gem 'aws-sdk-secretsmanager'
 gem 'ox'
 gem 'pry'
 
+# docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html
 
 

@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  MyPassword:
+    Type: String
+    NoEcho: true
+Resources:
+  MySecretGenerated:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserG
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      # https://docs.aws.amazon.com/AWSCloudFormation/latest/Use
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "test-user"}'
+        GenerateStringKey: "password"
+        PasswordLength: 30
+        ExcludeCharacters: '"@/\'
+  MySecretProvided:
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserG
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      # https://docs.aws.amazon.com/AWSCloudFormation/latest/Use
+      SecretString: !Ref MyPassword
