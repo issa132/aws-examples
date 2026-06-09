@@ -162,4 +162,30 @@ Kafka CLI is different from other CLI tools in that it's a series of scripts ins
 Note
 Kafka's testing framework is called Trogdor, a reference to the Homestar Runner character.
 
+
+# to download Kafka
 # docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html
+
+# my topic
+./kafka-topics.sh \
+--bootstrap-server $BS \
+  --command-config client.properties \
+  --create \
+--topic my-topic \
+--partitions 1
+
+# my producer
+./kafka-console-producer.sh \
+--broker-list $BS \
+--producer.config client.properties \
+--topic my-topic
+
+# my consumer
+./kafka-console-consumer.sh \
+--bootstrap-server $BS \
+--consumer.config client.properties \
+--topic my-topic \
+--from-beginning
+
+# extremely useful: (process millions of messages with kafka)
+karafka.karafka.io
